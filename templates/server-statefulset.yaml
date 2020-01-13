@@ -47,6 +47,7 @@ spec:
         fsGroup: {{ .Values.server.gid | default 1000 }}
       volumes:
         {{ template "vault.volumes" . }}
+      shareProcessNamespace: true
       containers:
         - name: vault
           {{ template "vault.resources" . }}
