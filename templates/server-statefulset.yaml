@@ -136,9 +136,29 @@ spec:
             timeoutSeconds: 5
           {{- end }}
           lifecycle:
-            {{- if .Values.server.lifecyclePostStart }}
+            {{- if .Values.server.init.enabled }}
             postStart:
-              {{- toYaml .Values.server.lifecyclePostStart | nindent 14 }}
+              exec:
+                command:
+                  - "/bin/vault-init"
+                  - "--address"
+                  - "https://127.0.0.1:8200"
+                  - "--root-token-ttl"
+                  - {{ .Values.server.init.rootTokenTTL | quote }}
+                  - "--recovery-threshold"
+                  - {{ .Values.server.init.recoveryThreshold | quote }}
+                {{- if eq .Values.zoneType "infra" }}
+                  - "--enable-pgp"
+                  - "--recovery-pgp-key-directory"
+                  - {{ .Values.server.init.recoveryPGPKeyDirectory | quote }}
+                {{- end }}
+                {{- if eq .Values.zoneType "cloud" }}
+                  - "--recovery-shares"
+                  - {{ .Values.server.init.recoveryShares | quote }}
+                  - "--backup-vault"
+                  - "--backup-vault-path"
+                  - secret/recovery/{{ required "Missing .Values.zoneName" .Values.zoneName }}
+                {{- end }}
             {{- end }}
             # Vault container doesn't receive SIGTERM from Kubernetes
             # and after the grace period ends, Kube sends SIGKILL.  This
