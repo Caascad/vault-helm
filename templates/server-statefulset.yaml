@@ -110,16 +110,9 @@ spec:
             successThreshold: 1
             timeoutSeconds: 5
           {{- end }}
-          {{- if .Values.server.livenessProbe.enabled }}
+          {{- if .Values.server.livenessProbe }}
           livenessProbe:
-            httpGet:
-              path: {{ .Values.server.livenessProbe.path | quote }}
-              port: 8200
-              scheme: {{ include "vault.scheme" . | upper }}
-            initialDelaySeconds: {{ .Values.server.livenessProbe.initialDelaySeconds }}
-            periodSeconds: 3
-            successThreshold: 1
-            timeoutSeconds: 5
+            {{- toYaml .Values.server.livenessProbe | nindent 12 }}
           {{- end }}
           lifecycle:
             {{- if .Values.server.init.enabled }}

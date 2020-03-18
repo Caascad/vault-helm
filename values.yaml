@@ -134,10 +134,7 @@ server:
     # If you need to use a http path instead of the default exec
     # path: /v1/sys/health?standbyok=true
   # Used to enable a livenessProbe for the pods
-  livenessProbe:
-    enabled: false
-    path: "/v1/sys/health?standbyok=true"
-    initialDelaySeconds: 60
+  # livenessProbe:
 
   # Used to set the sleep time during the preStop step
   preStopSleepSeconds: 5
