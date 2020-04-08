@@ -20,7 +20,6 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: HTTPS
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    external-dns.alpha.kubernetes.io/target: internal.{{ required "Missing .Values.zoneName" $.Values.zoneName }}.caascad.com
   {{- with .Values.server.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
