@@ -110,9 +110,9 @@ spec:
             successThreshold: 1
             timeoutSeconds: 5
           {{- end }}
-          {{- if .Values.server.livenessProbe }}
+          {{- if .Values.server.livenessProbe.enabled }}
           livenessProbe:
-            {{- toYaml .Values.server.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.server.livenessProbe.spec | nindent 12 }}
           {{- end }}
           lifecycle:
             {{- if .Values.server.init.enabled }}
