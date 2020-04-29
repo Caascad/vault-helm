@@ -140,14 +140,15 @@ spec:
                   - {{ .Values.server.init.rootTokenTTL | quote }}
                   - "--recovery-threshold"
                   - {{ .Values.server.init.recoveryThreshold | quote }}
-                {{- if eq .Values.zoneType "infra" }}
+                {{- if .Values.server.init.recoveryPGPKeyDirectory }}
                   - "--enable-pgp"
                   - "--recovery-pgp-key-directory"
                   - {{ .Values.server.init.recoveryPGPKeyDirectory | quote }}
-                {{- end }}
-                {{- if eq .Values.zoneType "cloud" }}
+                {{- else }}
                   - "--recovery-shares"
                   - {{ .Values.server.init.recoveryShares | quote }}
+                {{- end }}
+                {{- if .Values.server.init.backup }}
                   - "--backup-vault"
                   - "--backup-vault-path"
                   - secret/recovery/{{ required "Missing .Values.zoneName" .Values.zoneName }}
