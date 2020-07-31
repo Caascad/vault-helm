@@ -28,26 +28,18 @@ metadata:
 spec:
 {{- if .Values.server.ingress.tls }}
   tls:
-  {{- range .Values.server.ingress.tls }}
     - hosts:
-      {{- range .hosts }}
-        - {{ . | quote }}
-      {{- end }}
-      secretName: {{ .secretName }}
-  {{- end }}
+        - vault.{{ .Values.global.zoneName }}.caascad.com
+      secretName: vault-tls
 {{- end }}
   rules:
-  {{- range .Values.server.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: vault.{{ .Values.global.zoneName }}.caascad.com
       http:
         paths:
-        {{- range (.paths | default (list "/")) }}
-          - path: {{ . }}
+          - path: /
             backend:
               serviceName: {{ $serviceName }}
               servicePort: {{ $servicePort }}
-        {{- end }}
-  {{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
