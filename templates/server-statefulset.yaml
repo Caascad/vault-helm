@@ -149,15 +149,7 @@ spec:
           {{- end }}
           {{- if .Values.server.livenessProbe.enabled }}
           livenessProbe:
-            httpGet:
-              path: {{ .Values.server.livenessProbe.path | quote }}
-              port: 8200
-              scheme: {{ include "vault.scheme" . | upper }}
-            failureThreshold: {{ .Values.server.livenessProbe.failureThreshold }}
-            initialDelaySeconds: {{ .Values.server.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.server.livenessProbe.periodSeconds }}
-            successThreshold: {{ .Values.server.livenessProbe.successThreshold }}
-            timeoutSeconds: {{ .Values.server.livenessProbe.timeoutSeconds }}
+            {{- toYaml .Values.server.livenessProbe.spec | nindent 12 }}
           {{- end }}
           lifecycle:
             # Vault container doesn't receive SIGTERM from Kubernetes
