@@ -48,6 +48,10 @@ spec:
       {{ template "vault.topologySpreadConstraints" . }}
       {{ template "vault.tolerations" . }}
       {{ template "vault.nodeselector" . }}
+      {{- if .Values.server.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml .Values.server.topologySpreadConstraints | nindent 8 }}
+      {{- end }}
       {{- if .Values.server.priorityClassName }}
       priorityClassName: {{ .Values.server.priorityClassName }}
       {{- end }}
